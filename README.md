@@ -68,6 +68,5 @@ So if you believe in the bull — **start hitting Powell.**
 
 ---
 
-## ⚡ Credits
 
 Powered by [Base](https://base.org)
