@@ -7,26 +7,26 @@ import "./App.css";
 
 const CONTRACT_ADDRESS = "0x162316f84Cb8A3c981cC2cF150D4240EfEE2CeE1";
 
-// чтение/запись для вашего контракта
+
 const READ_ABI = [
   "function rateBps() view returns (uint256)",
   "function totalPresses() view returns (uint256)",
 ];
 const WRITE_ABI = ["function press()"];
 
-// минимальный ERC20 ABI
+
 const ERC20_ABI = ["function transfer(address to, uint256 value) returns (bool)"];
 
-// Base Sepolia (84532) в hex
+
 const CHAIN_ID_HEX = "0x14A34";
 
-// env — адрес тестового USDC и казначейства
-const USDC_ADDRESS = import.meta.env.VITE_USDC_ADDRESS;         // напр. 0x...
-const TREASURY_ADDRESS = import.meta.env.VITE_TREASURY_ADDRESS; // напр. твой universal
 
-// 0.1 USDC при 6 decimals
+const USDC_ADDRESS = import.meta.env.VITE_USDC_ADDRESS;         
+const TREASURY_ADDRESS = import.meta.env.VITE_TREASURY_ADDRESS; 
+
+
 const USDC_DECIMALS = 6n;
-const USDC_PRICE = 1n * 10n ** (USDC_DECIMALS - 1n); // 0.1 -> 100000
+const USDC_PRICE = 1n * 10n ** (USDC_DECIMALS - 1n); 
 
 async function waitForCallsMined(provider, id, { pollMs = 900, maxTries = 60 } = {}) {
   for (let i = 0; i < maxTries; i++) {
@@ -63,7 +63,7 @@ export default function App() {
   const [shake, setShake] = useState(false);
   const [msg, setMsg] = useState("");
 
-  // init SDK c явным funding: 'spend-permissions'
+ 
   useEffect(() => {
     const init = async () => {
       const sdk = createBaseAccountSDK({
@@ -73,7 +73,7 @@ export default function App() {
         subAccounts: {
           creation: "on-connect",
           defaultAccount: "sub",
-          funding: "spend-permissions", // 🔥 авто-спенд с universal
+          funding: "spend-permissions", 
         },
       });
       setProvider(sdk.getProvider());
@@ -81,7 +81,7 @@ export default function App() {
     init();
   }, []);
 
-  // находим/создаём sub именно для текущего origin
+  
   const ensureSubForDomain = async (univ) => {
     const res = await provider.request({
       method: "wallet_getSubAccounts",
@@ -127,6 +127,7 @@ export default function App() {
     }
   };
 
+  
   const handlePress = async () => {
     try {
       if (!provider) return;
@@ -142,13 +143,13 @@ export default function App() {
 
       const from = subAddress || universalAddress;
 
-      // calldata для press()
+      
       const pressIface = new ethers.Interface(WRITE_ABI);
       const pressData = pressIface.encodeFunctionData("press", []);
 
-      // calldata для USDC.transfer(treasury, 0.1 USDC)
+      
       const usdcIface = new ethers.Interface(ERC20_ABI);
-      const treasury = TREASURY_ADDRESS || universalAddress; // по умолчанию — universal
+      const treasury = TREASURY_ADDRESS || universalAddress; // 
       const usdcData = usdcIface.encodeFunctionData("transfer", [
         treasury,
         USDC_PRICE,
@@ -171,13 +172,34 @@ export default function App() {
       });
 
       const id = res?.id || res;
-      const mined = await waitForCallsMined(provider, id);
-      if (!mined.ok) setMsg("Transaction failed/reverted");
+
+      
+      let settled = false;
+      for (let i = 0; i < 6; i++) { 
+        try {
+          const st = await provider.request({
+            method: "wallet_getCallsStatus",
+            params: [{ id }],
+          });
+          if (st?.status === "CONFIRMED") {
+            settled = true;
+            break;
+          }
+          if (st?.status === "FAILED" || st?.status === "REJECTED") {
+            setMsg("Transaction failed/reverted");
+            settled = true;
+            break;
+          }
+        } catch {}
+        await new Promise((r) => setTimeout(r, 700));
+      }
+
+      
       await loadData();
+      setLoading(false);
     } catch (e) {
       console.error(e);
       setMsg(e?.message || "TX error");
-    } finally {
       setLoading(false);
     }
   };
@@ -201,10 +223,10 @@ export default function App() {
       {!connected ? (
         <>
           <button className="connect-btn" onClick={connectWallet}>
-            Connect / Create Base Sub-Account
+            Base Account
           </button>
           <p className="hint">
-            Price per hit: <b>0.1 USDC</b> • Auto Spend enabled
+            Price per hit: <b>0.1 USDC</b> • 
           </p>
         </>
       ) : (
