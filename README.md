@@ -1,16 +1,73 @@
-# React + Vite
+# 💼 Beat Powell
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Beat Powell** — an onchain meme-game where you can literally “punch the rate” to help the crypto market breathe again 😤💸  
 
-Currently, two official plugins are available:
+Every crypto trader is secretly waiting for Jerome Powell to cut rates…  
+Now you can finally **take action onchain** — one click at a time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🎮 Gameplay
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Each click represents a symbolic **“rate cut”** on the blockchain.  
+The global rate decreases with every hit, and all players see it update in real time.
 
-## Expanding the ESLint configuration
+To make it more fun (and more crypto-realistic), each punch costs **0.1 USDC (testnet)** —  
+a small “fee to fight inflation” 💥
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧠 How it works
+
+- Built on **Base Sepolia**  
+- Uses **Base Account SDK** with **Sub Accounts** and **Auto Spend Permissions**  
+- Each user automatically gets a Sub Account when connecting  
+- After granting “Spend Permissions,” you can click freely — without signing every transaction  
+- Every press updates onchain contract state and transfers 0.1 USDC to the treasury
+
+---
+
+## ⚙️ Tech Stack
+
+- React + Vite  
+- Base Account SDK (`@base-org/account`)  
+- ethers.js  
+- Smart contract deployed on Base Sepolia  
+- Deployed via **Vercel**
+
+---
+
+## 🔗 Live Demo
+
+🎮 [https://beat-powell-base.vercel.app](https://beat-powell-base.vercel.app)
+
+## 💻 Source Code
+
+🧱 [https://github.com/vikions/beat-powell-base](https://github.com/vikions/beat-powell-base)
+
+---
+
+## 🧩 How to play
+
+1. Connect your Base Account (Coinbase Smart Wallet)  
+2. Approve creation of a Sub Account  
+3. When prompted, allow “Spend Permissions” for USDC  
+4. Hit the **"PAY 0.1 USDC & HIT POWELL"** button  
+5. Watch the global interest rate fall 📉  
+
+---
+
+## 💬 Idea
+
+Crypto loves memes — but memes can move markets too.  
+This game channels the collective **"Rate Cut Hopium"** into an interactive onchain ritual.  
+Each player’s action symbolically pushes us one step closer to a lower rate environment —  
+and maybe, just maybe, a better market 🧘‍♂️
+
+So if you believe in the bull — **start hitting Powell.**
+
+---
+
+## ⚡ Credits
+
+Powered by [Base](https://base.org)
